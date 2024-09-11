@@ -3,5 +3,8 @@ info:
   title: Tbank_case_SA
   version: '1.0.0'
   description: 'Здесь находится спецификация запросов для задач из кейса для системных аналитиков'
+   contact:
+    name: Анна Морланг
+    email: ann.kenway@mail.ru
 
 paths:
