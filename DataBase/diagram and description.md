@@ -1,6 +1,5 @@
 ## Логическая схема БД
-![image](https://github.com/user-attachments/assets/3436fa2b-2a96-44f0-9c65-094d417fa474)
-
+![image](https://github.com/user-attachments/assets/c2c282b5-2c58-4995-81f8-2fd0d0fd79d4)
 
 ### Таблица клиентов (clients)
 В данном отношении хранятся данные о клиентах и их текущий статус блокировки (block_code_num)
