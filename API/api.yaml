@@ -41,7 +41,7 @@ paths:
         '404':
           description: "Не найден клиент с таким ID"
 
-    post:
+    put:
       description: "Изменить данные по ID киента"
       parameters:
         - in: path
@@ -201,8 +201,8 @@ paths:
           description: "Нет клиента с таким id"
   
   /client/block/{id}:
-    post:
-      description: "Заблокировать клиента по его ID"
+    put:
+      description: "Заблокировать платежи клиента по его ID"
       parameters:
         - in: path
           name: id
@@ -231,8 +231,8 @@ paths:
           description: "Код не найден"
   
   /client/unblock/{id}:
-    post:
-      description: "Разблокировать клиента по его ID"
+    put:
+      description: "Разблокировать платежи клиента по его ID"
       parameters:
         - in: path
           name: id
@@ -251,7 +251,7 @@ paths:
           description: "Не найден клиент с указанным ID"
   
   /client/add:
-    put:
+    post:
       description: "Добавить клиента в базу данных"
       parameters:
         - in: query
@@ -287,7 +287,7 @@ paths:
                 $ref: '#/components/schemas/Client'
   
   /payment/add:
-    put:
+    post:
       description: "Добавить платеж"
       parameters:
         - in: query
@@ -347,7 +347,7 @@ paths:
         '404':
           description: "Не найден код с таким номером"
   
-    post:
+    put:
       description: "Обновить информацию о коде"
       parameters:
         - in: path
@@ -372,7 +372,7 @@ paths:
         '404':
           description: "Нет кода с таким номером"
   
-    put:
+    post:
       description: "Добавить код блокировки"
       parameters:
         - in: path
