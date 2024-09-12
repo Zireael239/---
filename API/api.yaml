@@ -155,36 +155,10 @@ paths:
         '404':
           description: "Не найден платеж с указанным ID"
   
-    post:
-      description: "Обновить реквизиты платежа по id"
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
-            example: 1
-        - in: query
-          name: requisites
-          required: true
-          schema:
-            type: string
-            example: '(реквизиты платежа)'
-      responses:
-        '201':
-          description: 'Данные платежа обновлены'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Payment'
-        '404':
-          description: "Нет платежа с таким id"
-        '409':
-          description: "Некорректные реквизиты"
   
   /payment/code/{code}:
     get:
-      description: "Получить платежи, заблокированные по конкретному коду"
+      description: "Получить платежи, заблокированные по указанному коду"
       parameters:
         - in: path
           name: code
@@ -194,7 +168,7 @@ paths:
             example: 1
       responses:
         '200':
-          description: 'Платежи получены'
+          description: 'Платежи успешно получены'
           content:
             application/json:
               schema:
@@ -202,11 +176,11 @@ paths:
                 items:
                   $ref: '#/components/schemas/Payment'
         '404':
-          description: "Данный код не указан в таблице кодов"
+          description: "Код не найден"
   
   /payment/client/{id}:
     get:
-      description: "Получение всех платежей конректного клиента"
+      description: "Получение всех платежей клиента"
       parameters:
       - in: path
         name: id
@@ -216,7 +190,7 @@ paths:
           example: 1
       responses:
         '200':
-          description: 'Платежи получены'
+          description: 'Платежи успешно получены'
           content:
             application/json:
               schema:
@@ -228,7 +202,7 @@ paths:
   
   /client/block/{id}:
     post:
-      description: "Заблокировать клиента"
+      description: "Заблокировать клиента по его ID"
       parameters:
         - in: path
           name: id
@@ -250,15 +224,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/Client'
         '404':
-          description: "Нет клиента с таким id"
+          description: "Не найден клиент с указанным ID"
         '406':
           description: "Код равен 0"
         '409':
-          description: "Указанного кода нет в таблице кодов"
+          description: "Код не найден"
   
   /client/unblock/{id}:
     post:
-      description: "Разблокировать клиента"
+      description: "Разблокировать клиента по его ID"
       parameters:
         - in: path
           name: id
@@ -274,11 +248,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Client'
         '404':
-          description: "Нет клиента с таким id"
+          description: "Не найден клиент с указанным ID"
   
   /client/add:
     put:
-      description: "Добавить клиента"
+      description: "Добавить клиента в базу данных"
       parameters:
         - in: query
           name: name
@@ -292,9 +266,15 @@ paths:
           schema:
             type: integer
             example: 1234567890
+             - in: query
+          name: KPP
+          required: true
+          schema:
+            type: integer
+            example: 772101001
       responses:
         '201':
-          description: 'Клиент создан'
+          description: 'Клиент успешно внесен в базу'
           content:
             application/json:
               schema:
@@ -311,7 +291,7 @@ paths:
       description: "Добавить платеж"
       parameters:
         - in: query
-          name: requisites
+          name: requirements
           required: true
           schema:
             type: string
@@ -330,16 +310,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/Payment'
         '404':
-          description: "Нет клиента с таким id"
+          description: "Не найден клиент с указанным ID"
         '409':
-          description: "Некорректные реквизиты"
+          description: "Введены некорректные реквизиты"
   
   /code:
     get:
-      description: "Получить все коды"
+      description: "Получить все коды блокировки с описаниями"
       responses:
         '200':
-          description: 'Коды получены'
+          description: 'Коды блокировки получены'
           content:
             application/json:
               schema:
@@ -365,10 +345,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Code'
         '404':
-          description: "Нет кода с таким номером"
+          description: "Не найден код с таким номером"
   
     post:
-      description: "Обновить код"
+      description: "Обновить информацию о коде"
       parameters:
         - in: path
           name: code
@@ -381,10 +361,10 @@ paths:
           required: true
           schema:
             type: string
-            example: 'Подозрительная деятельность'
+            example: 'Подозрительная транзакция'
       responses:
         '201':
-          description: 'Код обновлен'
+          description: 'Код успешно обновлен'
           content:
             application/json:
               schema:
@@ -393,7 +373,7 @@ paths:
           description: "Нет кода с таким номером"
   
     put:
-      description: "Добавить код"
+      description: "Добавить код блокировки"
       parameters:
         - in: path
           name: code
@@ -406,10 +386,10 @@ paths:
           required: true
           schema:
             type: string
-            example: 'Подозрительная деятельность'
+            example: 'Подозрительная транзакция'
       responses:
         '201':
-          description: 'Код создан'
+          description: 'Код успешно создан'
           content:
             application/json:
               schema:
@@ -430,29 +410,33 @@ components:
       required:
         - name
         - INN
+        - KPP
       properties:
         id:
           type: integer
           example: 1
         name:
           type: string
-          example: 'Иванов Иван Иванович'
+          example: 'Петров Петр Петрович'
         code:
           $ref: '#/components/schemas/Code'
         INN:
           type: integer
-          example: 1234567890
+          example: 0123456789
+        KPP:
+          type: integer
+          example: 772101001
     Payment:
       type: object
       required:
-        - requisites
+        - requirements
       properties:
         id:
           type: integer
           example: 1
-        requisites:
+        requirements:
           type: string
-          example: '(реквизиты)'
+          example: '(реквизиты платежа)'
         code:
           $ref: '#/components/schemas/Code'
         client_id:
@@ -467,4 +451,4 @@ components:
           example: 0
         description:
           type: string
-          example: 'Клиент не заблокирован'
+          example: 'Платежи клиента не заблокированы'
