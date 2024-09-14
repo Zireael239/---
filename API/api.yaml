@@ -8,6 +8,44 @@ info:
     email: ann.kenway@mail.ru
 
 paths:
+
+/client/add:
+    post:
+      description: "Добавить клиента в базу данных"
+      parameters:
+        - in: query
+          name: name
+          schema:
+            type: string
+            example: 'Иванов Иван Иванович'
+          required: true
+        - in: query
+          name: INN
+          required: true
+          schema:
+            type: integer
+            example: 1234567890
+             - in: query
+          name: KPP
+          required: true
+          schema:
+            type: integer
+            example: 772101001
+      responses:
+        '201':
+          description: 'Клиент успешно внесен в базу'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+        '409':
+          description: "Клиент с таким ИНН уже есть"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+
+                
  /client:
     get:
       description: "Получить список всех клиентов"
@@ -79,6 +117,7 @@ paths:
           description: "Не найден клиент с таким ID"
         '409':
           description: "Введенные данные уже принадлежат другому клиенту"
+          
 
   /client/code/{code}:
     get:
@@ -101,6 +140,7 @@ paths:
                   $ref: '#/components/schemas/Client'
         '404':
           description: "Код не найден"
+          
   
   /client/code/{id}:
     get:
@@ -121,6 +161,7 @@ paths:
                 $ref: '#/components/schemas/Code'
         '404':
           description: "Не найден клиент с таким ID"
+          
   
   /payment:
     get:
@@ -177,6 +218,7 @@ paths:
                   $ref: '#/components/schemas/Payment'
         '404':
           description: "Код не найден"
+          
   
   /payment/client/{id}:
     get:
@@ -199,6 +241,7 @@ paths:
                   $ref: '#/components/schemas/Payment'
         '404':
           description: "Нет клиента с таким id"
+          
   
   /client/block/{id}:
     put:
@@ -229,6 +272,7 @@ paths:
           description: "Код равен 0"
         '409':
           description: "Код не найден"
+          
   
   /client/unblock/{id}:
     put:
@@ -249,42 +293,7 @@ paths:
                 $ref: '#/components/schemas/Client'
         '404':
           description: "Не найден клиент с указанным ID"
-  
-  /client/add:
-    post:
-      description: "Добавить клиента в базу данных"
-      parameters:
-        - in: query
-          name: name
-          schema:
-            type: string
-            example: 'Иванов Иван Иванович'
-          required: true
-        - in: query
-          name: INN
-          required: true
-          schema:
-            type: integer
-            example: 1234567890
-             - in: query
-          name: KPP
-          required: true
-          schema:
-            type: integer
-            example: 772101001
-      responses:
-        '201':
-          description: 'Клиент успешно внесен в базу'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Client'
-        '409':
-          description: "Клиент с таким ИНН уже есть"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Client'
+          
   
   /payment/add:
     post:
@@ -326,6 +335,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Code'
+                  
   
   /code/{code}:
     get:
